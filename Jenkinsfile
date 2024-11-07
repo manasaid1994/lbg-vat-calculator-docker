@@ -39,15 +39,13 @@ pipeline {
             steps {
                 script {
                     // SSH into the target machine and run Docker commands
-                    sshagent(credentials: [SSH_CREDENTIALS]) {
                         sh """
                             # Pull the latest Docker image from Docker Hub
-                            ssh -o StrictHostKeyChecking=no $SSH_CREDENTIALS@$TARGET_HOST "
+                            ssh $SSH_CREDENTIALS@$TARGET_HOST "
                                 docker pull $DOCKER_IMAGE && \
                                 docker run -d -p 3000:3000 --name app-container $DOCKER_IMAGE
                             "
                         """
-                    }
                 }
             }
         }
